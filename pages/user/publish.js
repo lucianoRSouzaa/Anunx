@@ -9,9 +9,11 @@ import {
     IconButton,
 } from '@mui/material'
 
-import TemplateDefault from '../../src/templates/Default'
+import { useDropzone } from 'react-dropzone'
+import { useState } from 'react'
 import { DeleteForever } from '@mui/icons-material'
 
+import TemplateDefault from '../../src/templates/Default'
 import style from './publish.module.css'
 
 const StyledContainerTitle = styled(Container)(({ theme }) => ({
@@ -45,6 +47,23 @@ const StyledBoxDropzone = styled(Box)(({ theme }) => ({
 }))
 
 const Publish = () => {
+    const [files, setFiles] = useState([])
+
+    const { getRootProps, getInputProps } = useDropzone({
+        accept: 'image/*',
+        onDrop: acceptedFile => {
+            // está criando um novo objeto para cada file só que acrescentando nesse objeto
+            // a propriedade preview com o valor de URL.createObjectURL() => (nativo do JS)
+            const newFiles = acceptedFile.map(file => Object.assign(file, {
+                preview: URL.createObjectURL(file)
+            }))
+
+            setFiles([
+                ...files,
+                ...newFiles,
+            ])
+        }
+    })
 
     return (
         <TemplateDefault>
@@ -110,26 +129,36 @@ const Publish = () => {
                         A primeira imagem é a foto principal do seu anúncio.
                     </Typography>
                     <StyledBoxThumbsContainer>
-                        <StyledBoxDropzone>
+                        <StyledBoxDropzone {...getRootProps()}>
+                            <input {...getInputProps()} />
                             <Typography variant="body2" color="textPrimary">
                                 Clique para adicionar ou arraste a imagem para aqui.
                             </Typography>
                         </StyledBoxDropzone>
-                        <Box
-                            className={style.boxThumb}
-                            style={{ backgroundImage: 'url(https://source.unsplash.com/random)' }}
-                        >
-                            <Box className={style.boxMainImage}>
-                                <Typography variant="body2" color="secondary">
-                                    Principal
-                                </Typography>
-                            </Box>
-                            <Box className={style.boxThumbMask}>
-                                <IconButton color="secondary">
-                                    <DeleteForever fontSize="large" />
-                                </IconButton>
-                            </Box>
-                        </Box>
+                        {
+                            files.map((file, index) => (
+                                <Box
+                                    key={file.name}
+                                    className={style.boxThumb}
+                                    style={{ backgroundImage: `url(${file.preview})` }}
+                                >
+                                    {
+                                        index === 0 ?
+                                            <Box className={style.boxMainImage}>
+                                                <Typography variant="body2" color="secondary">
+                                                    Principal
+                                                </Typography>
+                                            </Box>
+                                        : null
+                                    }
+                                    <Box className={style.boxThumbMask}>
+                                        <IconButton color="secondary">
+                                            <DeleteForever fontSize="large" />
+                                        </IconButton>
+                                    </Box>
+                                </Box>
+                            ))
+                        }
                     </StyledBoxThumbsContainer>
                 </StyledBox>
             </StyledContainerBox>
