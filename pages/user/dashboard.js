@@ -13,9 +13,6 @@ import {
 import TemplateDefault from '../../src/templates/Default'
 
 
-const StyledContainer = styled(Container)(({ theme }) => ({
-  padding: theme.spacing(8, 0, 6),
-}))
 const StyledButtonAdd = styled(Button)(() => ({
   margin: '30px auto',
   display: 'block',
@@ -27,14 +24,14 @@ const StyledCardMedia = styled(CardMedia)(() => ({
 export default function Home() {
   return (
     <TemplateDefault>
-      <StyledContainer maxWidth="sm">
+      <Container maxWidth="sm">
         <Typography component="h1" variant="h2" align="center" sx={{ fontSize: '3.3em' }}>
             Meus Anúncios
         </Typography>
         <StyledButtonAdd variant="contained" color="primary">
           Publicar novo anúncio
         </StyledButtonAdd>
-      </StyledContainer>
+      </Container>
       <Container maxWidth="lg">
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} md={4}>

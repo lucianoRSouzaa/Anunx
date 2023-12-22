@@ -9,7 +9,6 @@ import {
 
 const StyledContainer = styled(Container)(({ theme }) => ({
     borderTop: `1px solid ${theme.palette.divider}`,  
-    marginTop: theme.spacing(8),  
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(5),
     // como se fosse um media queries, com break point no sm

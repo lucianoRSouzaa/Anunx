@@ -21,10 +21,10 @@ import TemplateDefault from '../../src/templates/Default'
 import style from './publish.module.css'
 
 const StyledContainerTitle = styled(Container)(({ theme }) => ({
-    padding: theme.spacing(8, 0, 6),
+    paddingBottom: theme.spacing(4),
 }))
 const StyledContainerBox = styled(Container)(({ theme }) => ({
-    paddingBottom: theme.spacing(3),
+    paddingBottom: theme.spacing(4),
 }))
 const StyledBox = styled(Box)(({ theme }) => ({
     backgroundColor: theme.palette.background.white,
