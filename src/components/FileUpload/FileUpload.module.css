@@ -1,0 +1,50 @@
+.boxThumb{
+    position: relative;
+    width: 186px;
+    height: 137px;
+    background-size: cover;
+    background-position: center center;
+    margin: 0 15px 15px 0;
+}
+
+.boxThumbMask{
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    height: 100%;
+    width: 100%;
+}
+
+.boxThumb:hover .boxThumbMask{
+    display: flex;
+}
+
+.boxMainImage{
+    background-color: blue;
+    padding: 6px 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.BoxThumbsContainer{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.BoxDropzone{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    width: 186px;
+    height: 137px;
+    margin: 0 15px 15px 0;
+    background-color: rgb(242, 244, 245);
+    border: 2px dashed black;
+    cursor: pointer;
+}
