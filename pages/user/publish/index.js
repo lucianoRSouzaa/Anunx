@@ -19,11 +19,10 @@ import TemplateDefault from '../../../src/templates/Default'
 import {
     StyledContainerTitle,
     StyledContainerBox,
-    StyledBox,
     StyledInputLabel
 } from './styles'
 import FileUpload from '@/src/components/FileUpload'
-
+import StyledBox from '@/src/components/StyledBox'
 
 const Publish = () => {
     return (
@@ -58,7 +57,7 @@ const Publish = () => {
                                     </Typography>
                                 </StyledContainerTitle>
                                 <StyledContainerBox maxWidth="md">
-                                    <StyledBox sx={{ boxShadow: 1 }}>
+                                    <StyledBox shadow>
 
                                         <FormControl error={errors.title && touched.title} fullWidth>
                                             <StyledInputLabel>Título do Anúncio</StyledInputLabel>
@@ -106,7 +105,7 @@ const Publish = () => {
                                 </StyledContainerBox>
 
                                 <StyledContainerBox maxWidth="md">
-                                    <StyledBox sx={{ boxShadow: 1 }}>
+                                    <StyledBox shadow>
                                         <FileUpload 
                                             files={values.files}
                                             errors={errors.files}
@@ -117,7 +116,7 @@ const Publish = () => {
                                 </StyledContainerBox>
 
                                 <StyledContainerBox maxWidth="md">
-                                    <StyledBox sx={{ boxShadow: 1 }}>
+                                    <StyledBox shadow>
                                         <FormControl error={errors.description && touched.description} fullWidth>
                                             <StyledInputLabel variant="filled">Escreva os detalhes do que está vendendo</StyledInputLabel>
                                             <OutlinedInput 
@@ -135,7 +134,7 @@ const Publish = () => {
                                 </StyledContainerBox>
 
                                 <StyledContainerBox maxWidth="md">
-                                    <StyledBox sx={{ boxShadow: 1 }}>
+                                    <StyledBox shadow>
                                         <FormControl error={errors.price && touched.price} fullWidth>
                                             <StyledInputLabel>Preço de venda</StyledInputLabel>
                                             <Input
@@ -151,7 +150,7 @@ const Publish = () => {
                                 </StyledContainerBox>
 
                                 <StyledContainerBox maxWidth="md">
-                                    <StyledBox sx={{ boxShadow: 1 }}>
+                                    <StyledBox shadow>
                                         <Typography component="h6" variant="h6" color="textPrimary" gutterBottom>
                                             Dados de Contato
                                         </Typography>
