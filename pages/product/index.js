@@ -2,7 +2,6 @@ import {
     Container, 
     Grid,
     styled,
-    Box,
     Typography,
     Chip,
     Card,
@@ -13,12 +12,8 @@ import {
 import Carousel from 'react-material-ui-carousel'
 
 import TemplateDefault from '../../src/templates/Default'
+import StyledBox from '@/src/components/StyledBox'
 
-const StyledBox = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.background.white,
-    padding: theme.spacing(3),
-    marginBottom: theme.spacing(4),
-}))
 const StyledCard = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.background.white,
     padding: theme.spacing(3),
@@ -38,7 +33,7 @@ const Product = () => {
             <Container maxWidth="lg">
                 <Grid container spacing={3}>
                     <Grid item xs={8}>
-                        <StyledBox>
+                        <StyledBox applyMargin>
                             <Carousel
                                 autoPlay={false}
                                 animation="slide"
@@ -66,14 +61,14 @@ const Product = () => {
                             </Carousel>
                         </StyledBox>
 
-                        <StyledBox textAlign="left">
+                        <StyledBox applyMargin>
                             <Typography component="span" variant="caption">Publicado 16 de Junho de 2021</Typography>
                             <StyledProductName component="h4" variant="h4">Jaguar XE 2.0 Aut.</StyledProductName>
                             <StyledPrice component="h4" variant="h4">R$ 50.000,00</StyledPrice>
                             <Chip label="Categoria" />
                         </StyledBox>
 
-                        <StyledBox textAlign="left">
+                        <StyledBox>
                             <Typography component="h6" variant="h6">Descrição</Typography>
                             <Typography component="p" variant="body2">
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque aut vel eveniet corporis eaque facilis adipisci, numquam quia fuga, tenetur alias cumque cupiditate ea nulla! Placeat harum aperiam cumque dolor?

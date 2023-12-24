@@ -13,12 +13,8 @@ import SearchIcon from '@mui/icons-material/Search';
 
 import TemplateDefault from '../../src/templates/Default'
 import Card from '../../src/components/Card'
+import StyledBox from '@/src/components/StyledBox'
 
-const StyledBox = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.background.white,
-    padding: theme.spacing(3),
-    paddingBottom: theme.spacing(4),
-}))
 const StylePaper = styled(Paper)(({ theme }) => ({
     display: 'flex',
     justifyContent: 'space-between',
