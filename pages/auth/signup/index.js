@@ -1,20 +1,34 @@
 import { Formik } from 'formik'
+import axios from 'axios'
 import { 
     Container, 
     FormHelperText, 
     Input, 
     InputLabel, 
-    Typography 
+    Typography,
 } from '@mui/material'
 
 import TemplateDefault from '@/src/templates/Default'
 import StyledBox from '@/src/components/StyledBox'
 
-import { StyledContainerTitle, StyledFormControl, StyledButtonSubmit } from './styles'
+import {
+    StyledContainerTitle,
+    StyledFormControl,
+    StyledButtonSubmit,
+    StyledCircularProgress,
+} from './styles'
 import { initialValues, validationSchema } from './formValues'
 
 const Signup = () => {
     
+    const handleFormSubmit = async values => {
+        const response = await axios.post('/api/users', values)
+
+        if (response.data.success) {
+            console.log('cadastro realizado com sucesso!')
+        }
+    }
+
     return (
         <TemplateDefault>
             <StyledContainerTitle maxWidth="sm" component="main">
@@ -31,9 +45,7 @@ const Signup = () => {
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
-                        onSubmit={values => {
-                            console.log('enviado', values)
-                        }}
+                        onSubmit={handleFormSubmit}
                     >
                         {
                             ({
@@ -42,6 +54,7 @@ const Signup = () => {
                                 values,
                                 handleChange,
                                 handleSubmit,
+                                isSubmitting,
                             }) => {
                                 return (
                                     <form onSubmit={handleSubmit}>
@@ -96,14 +109,21 @@ const Signup = () => {
                                             </FormHelperText>
                                         </StyledFormControl>
 
-                                        <StyledButtonSubmit
-                                            type="submit"
-                                            fullWidth
-                                            variant="contained"
-                                            color="primary"
-                                        >
-                                            Cadastrar
-                                        </StyledButtonSubmit>
+                                        {
+                                            isSubmitting
+                                             ? (
+                                                <StyledCircularProgress />
+                                             ) : (
+                                                <StyledButtonSubmit
+                                                    type="submit"
+                                                    fullWidth
+                                                    variant="contained"
+                                                    color="primary"
+                                                >
+                                                    Cadastrar
+                                                </StyledButtonSubmit>
+                                            )
+                                        }
                                     </form>
                                 )
                             }
