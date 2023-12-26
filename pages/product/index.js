@@ -33,7 +33,7 @@ const Product = () => {
             <Container maxWidth="lg">
                 <Grid container spacing={3}>
                     <Grid item xs={8}>
-                        <StyledBox applyMargin>
+                        <StyledBox applymargin>
                             <Carousel
                                 autoPlay={false}
                                 animation="slide"
@@ -61,7 +61,7 @@ const Product = () => {
                             </Carousel>
                         </StyledBox>
 
-                        <StyledBox applyMargin>
+                        <StyledBox applymargin>
                             <Typography component="span" variant="caption">Publicado 16 de Junho de 2021</Typography>
                             <StyledProductName component="h4" variant="h4">Jaguar XE 2.0 Aut.</StyledProductName>
                             <StyledPrice component="h4" variant="h4">R$ 50.000,00</StyledPrice>

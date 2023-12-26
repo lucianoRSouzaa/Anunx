@@ -1,17 +1,17 @@
 import { styled } from '@mui/system'
 import { Box } from '@mui/material'
 
-const BoxStyle = styled(Box)(({ theme, applyMargin  }) => ({
+const BoxStyle = styled(Box)(({ theme, applymargin  }) => ({
     backgroundColor: theme.palette.background.white,
     padding: theme.spacing(3),
-    marginBottom: applyMargin ? theme.spacing(4) : 0,
+    marginBottom: applymargin ? theme.spacing(4) : 0,
 }))
 
-const StyledBox = ({ children, shadow, applyMargin }) => {
+const StyledBox = ({ children, shadow, applymargin }) => {
     
     return (
         <BoxStyle 
-            applyMargin={applyMargin} 
+            applymargin={applymargin} 
             sx={shadow ? { boxShadow: 1 } : {}}
         >
             {children}
