@@ -1,0 +1,12 @@
+.divCenter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.textLoading{
+    font-size: 1.7rem;
+    margin-right: 1rem;
+}
