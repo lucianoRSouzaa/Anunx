@@ -1,11 +1,19 @@
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import dbConnect from '@/src/utils/dbConnect';
+import NextAuth from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import GoogleProvider from "next-auth/providers/google"
+
+import dbConnect from '@/src/utils/dbConnect'
 import UsersModel from "@/src/models/users"
-import { compare } from '@/src/utils/password';
+import { compare } from '@/src/utils/password'
 
 export default NextAuth({
     providers : [
+        
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET
+        }),
+
         CredentialsProvider({
             name : "Credentials",
             
@@ -26,7 +34,7 @@ export default NextAuth({
                     return null
                 }
 
-                return user;
+                return user
             }
         })
     ],
