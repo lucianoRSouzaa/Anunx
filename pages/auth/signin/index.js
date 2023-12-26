@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Formik } from 'formik'
 import { useRouter } from 'next/router'
-import { signIn, useSession } from "next-auth/react"
+import { signIn } from "next-auth/react"
 
 import { 
     Box,
@@ -30,11 +30,7 @@ import { initialValues, validationSchema } from './formValues'
 
 const Signin = () => {
     const router = useRouter()
-    const { setToasty } = useToasty()
-    const session = useSession()
-
     const [loginError, setLoginError] = useState(null)
-    console.log(session)
     
     const handleFormSubmit = async values => {
         const response = await signIn('credentials', {
@@ -52,7 +48,7 @@ const Signin = () => {
 
     const handleGoogleLogin = () => {
         signIn('google', {
-            callbackUrl: 'http://localhost:3000/user/dashboard'
+            callbackUrl: `${process.env.NEXT_PUBLIC_APP_URL}/user/dashboard`
         })
     }
 
