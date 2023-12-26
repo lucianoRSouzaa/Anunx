@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import Image from 'next/image'
 import { Formik } from 'formik'
 import { useRouter } from 'next/router'
 import { signIn, useSession } from "next-auth/react"
 
 import { 
+    Box,
+    Button,
     Container, 
     FormHelperText, 
     Input, 
@@ -21,6 +24,7 @@ import {
     StyledButtonSubmit,
     StyledCircularProgress,
     AlertLoginError,
+    StyledBoxOrSeparator,
 } from './styles'
 import { initialValues, validationSchema } from './formValues'
 
@@ -46,6 +50,12 @@ const Signin = () => {
         router.push('/user/dashboard')
     }
 
+    const handleGoogleLogin = () => {
+        signIn('google', {
+            callbackUrl: 'http://localhost:3000/user/dashboard'
+        })
+    }
+
     return (
         <TemplateDefault>
             <StyledContainerTitle maxWidth="sm" component="main">
@@ -56,6 +66,28 @@ const Signin = () => {
 
             <Container maxWidth="md">
                 <StyledBox>
+
+                    <Box display="flex" justifyContent="center">
+                        <Button 
+                            variant="contained"
+                            color="primary"
+                            startIcon={
+                                <Image 
+                                    src="/images/logo_google.svg" 
+                                    width={20} 
+                                    height={20}
+                                    alt="Login com o Google"
+                                />
+                            }
+                            onClick={handleGoogleLogin}>
+                            Entrar com Google
+                        </Button>
+                    </Box>
+
+                    <StyledBoxOrSeparator>
+                        <span style={{ backgroundColor:  'white', padding: '0 18px'}}>ou</span>
+                    </StyledBoxOrSeparator>
+
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}

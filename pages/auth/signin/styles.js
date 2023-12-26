@@ -1,5 +1,12 @@
 import { styled } from '@mui/system'
-import { Container, FormControl, Button, CircularProgress, Alert } from '@mui/material'
+import {
+  Container,
+  FormControl,
+  Button,
+  CircularProgress,
+  Alert,
+  Box
+} from '@mui/material'
 
 export const StyledContainerTitle = styled(Container)(({ theme }) => ({
   paddingBottom: theme.spacing(4),
@@ -21,4 +28,14 @@ export const StyledCircularProgress = styled(CircularProgress)(() => ({
 
 export const AlertLoginError = styled(Alert)(() => ({
   marginBottom: 25,
+}))
+
+export const StyledBoxOrSeparator = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.15)',
+  width: '100%',
+  height: 1,
+  margin: theme.spacing(7, 0, 4),
 }))
