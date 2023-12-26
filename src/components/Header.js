@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AccountCircle } from '@mui/icons-material'
+import { useSession, signOut } from 'next-auth/react'
 import {
     AppBar,
     Box,
@@ -16,6 +16,7 @@ import {
 } from '@mui/material'
 import Link from 'next/link'
 
+import { AccountCircle } from '@mui/icons-material'
 
 const StyledMenuLink = styled(Link)(() => ({
   color: 'inherit',
@@ -25,6 +26,7 @@ const StyledMenuLink = styled(Link)(() => ({
 export default function ButtonAppBar() {
   const [anchorUserMenu, setAnchorUserMenu] = useState(false)
   const openUserMenu = Boolean(anchorUserMenu)
+  const session = useSession()
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -34,20 +36,25 @@ export default function ButtonAppBar() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Anunx
             </Typography>
-            <Link href="/user/publish" passHref style={{ color: 'inherit' }}>
-               <Button color="inherit" variant="outlined" sx={{ mr: 2 }}>Anunciar e Vender</Button>
+            <Link href={session ? '/user/publish' : '/auth/signin'} passHref style={{ color: 'inherit' }}>
+               <Button color="inherit" variant="outlined" sx={{ mr: 3 }}>Anunciar e Vender</Button>
             </Link>
-            {/* setando o estado com o elemento atual (currentTarget) */}
-            <IconButton color="secondary" onClick={e => setAnchorUserMenu(e.currentTarget)}>
-              {
-                true === false
-                 ? <Avatar src="" />
-                 : <AccountCircle />
-              }
-              <Typography variant="subtitle2" color="secondary" sx={{ ml: 1.2 }}>
-                Luciano Souza
-              </Typography>
-            </IconButton>
+
+            {
+              session.data && session.data.user
+               ? (
+                  <IconButton color="secondary" onClick={e => setAnchorUserMenu(e.currentTarget)}>
+                    {
+                      session.data.user.image
+                        ? <Avatar src={session.data.user.image} />
+                        : <AccountCircle />
+                    }
+                    <Typography variant="subtitle2" color="secondary" sx={{ ml: 1.2 }}>
+                      {session.data.user.name}
+                    </Typography>
+                  </IconButton>
+               ) : null
+            }
 
             <Menu
               anchorEl={anchorUserMenu}
@@ -65,7 +72,7 @@ export default function ButtonAppBar() {
                 <MenuItem>Publicar novo anúncio</MenuItem>
               </StyledMenuLink>
               <Divider style={{ margin: '5px 0' }} />
-              <MenuItem>Sair</MenuItem>
+              <MenuItem onClick={() => signOut({ callbackUrl: '/' })}>Sair</MenuItem>
             </Menu>
           </Toolbar>
         </Container>
