@@ -15,7 +15,7 @@ const StyledButtonAdd = styled(Button)(() => ({
   display: 'block',
 }))
 
-export default function Home() {
+const Home = () => {
   return (
     <TemplateDefault>
       <Container maxWidth="sm">
@@ -84,3 +84,7 @@ export default function Home() {
     </TemplateDefault>
   )
 }
+
+Home.requireAuth = true
+
+export default Home
