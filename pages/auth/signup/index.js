@@ -35,7 +35,7 @@ const Signup = () => {
                 text: 'Cadastro realizado com sucesso',
             })
 
-            router.push('auth/signin')
+            router.push('/auth/signin')
         }
     }
 
