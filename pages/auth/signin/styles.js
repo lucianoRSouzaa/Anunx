@@ -1,5 +1,5 @@
 import { styled } from '@mui/system'
-import { Container, FormControl, Button, CircularProgress } from '@mui/material'
+import { Container, FormControl, Button, CircularProgress, Alert } from '@mui/material'
 
 export const StyledContainerTitle = styled(Container)(({ theme }) => ({
   paddingBottom: theme.spacing(4),
@@ -17,4 +17,8 @@ export const StyledButtonSubmit = styled(Button)(({ theme }) => ({
 export const StyledCircularProgress = styled(CircularProgress)(() => ({
   display: 'block',
   margin: '20px auto 5px auto',
+}))
+
+export const AlertLoginError = styled(Alert)(() => ({
+  marginBottom: 25,
 }))

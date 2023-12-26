@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Formik } from 'formik'
-import axios from 'axios'
 import { useRouter } from 'next/router'
+import { signIn, useSession } from "next-auth/react"
+
 import { 
     Container, 
     FormHelperText, 
@@ -18,15 +20,30 @@ import {
     StyledFormControl,
     StyledButtonSubmit,
     StyledCircularProgress,
+    AlertLoginError,
 } from './styles'
 import { initialValues, validationSchema } from './formValues'
 
 const Signin = () => {
     const router = useRouter()
     const { setToasty } = useToasty()
+    const session = useSession()
+
+    const [loginError, setLoginError] = useState(null)
+    console.log(session)
     
     const handleFormSubmit = async values => {
-        
+        const response = await signIn('credentials', {
+            email: values.email,
+            password: values.password,
+            redirect: false
+        })
+
+        if (response.error) {
+            return setLoginError('Usuário ou senha inválidos')
+        }
+
+        router.push('/user/dashboard')
     }
 
     return (
@@ -55,6 +72,12 @@ const Signin = () => {
                             }) => {
                                 return (
                                     <form onSubmit={handleSubmit}>
+                                        
+                                        {loginError && (
+                                            <AlertLoginError severity="error">
+                                            {loginError}
+                                            </AlertLoginError>
+                                        )}
 
                                         <StyledFormControl fullWidth error={errors.email && touched.email}>
                                             <InputLabel>E-mail</InputLabel>
