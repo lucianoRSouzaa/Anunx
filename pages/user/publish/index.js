@@ -9,13 +9,18 @@ import {
     MenuItem,
     FormHelperText,
     Input,
+    CircularProgress,
 } from '@mui/material'
 
 import { Formik } from 'formik'
+import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
+import axios from 'axios'
 
 import { initialValues, validationSchema } from './formValues'
 
 import TemplateDefault from '../../../src/templates/Default'
+import useToasty from '@/src/contexts/Toasty'
 import {
     StyledContainerTitle,
     StyledContainerBox,
@@ -25,15 +30,66 @@ import FileUpload from '@/src/components/FileUpload'
 import StyledBox from '@/src/components/StyledBox'
 
 const Publish = () => {
+    const { setToasty } = useToasty()
+    const router = useRouter()
+    const session = useSession()
+
+    console.log(session)
+
+    const formValues = {
+        ...initialValues,
+    }
+
+    formValues.image = session.data.user.image
+    formValues.userId = session.data.user.userId
+
+    const handleSuccess = () => {
+        setToasty({
+            open: true,
+            text: 'Anúncio cadastrado com sucesso',
+            severity: 'success',
+        })
+    
+        router.push('/user/dashboard')
+    }
+    
+    const handleError = () => {
+        setToasty({
+            open: true,
+            text: 'Ops, ocorreu um erro, tente novamente.',
+            severity: 'error',
+        })
+    }
+    
+    const handleSubmit = async (values) => {
+        const formData = new FormData()
+    
+        for(let field in values) {
+            if (field === 'files') {
+                values.files.forEach(file => {
+                    formData.append('files', file)
+                })
+            } else {
+                // está fezendo isso, basicamente ==> formData.title = values.title
+                formData.append(field, values[field])
+            }
+        }
+    
+        axios.post('/api/products', formData)
+            .then(handleSuccess)
+            .catch(handleError)
+    }
+
+    console.log(formValues)
+
+
     return (
         <TemplateDefault>
 
             <Formik 
-                initialValues={initialValues}
+                initialValues={formValues}
                 validationSchema={validationSchema}
-                onSubmit={ values => {
-                    console.log('enviado', values)
-                }}
+                onSubmit={handleSubmit}
             >
                 {
                     // touched para ver se o campo foi tocado
@@ -44,10 +100,15 @@ const Publish = () => {
                         handleChange,
                         handleSubmit,
                         setFieldValue,
+                        isSubmitting,
                     }) => {
 
                         return (
                             <form onSubmit={handleSubmit}>
+
+                                <Input name="userId" type="hidden" value={values.userId} />
+                                <Input name="image" type="hidden" value={values.image} />
+
                                 <StyledContainerTitle maxWidth="sm">
                                     <Typography component="h1" variant="h2" align="center" color="textPrimary">
                                         Publicar Anúncio
@@ -201,9 +262,13 @@ const Publish = () => {
 
                                 <StyledContainerBox maxWidth="md">
                                     <Box textAlign="right">
-                                        <Button type="submit" variant="contained" color="primary">
-                                            Publicar Anúncio
-                                        </Button>
+                                        {
+                                            isSubmitting
+                                                ? <CircularProgress />
+                                                :  <Button type="submit" variant="contained" color="primary">
+                                                    Publicar Anúncio
+                                                   </Button>
+                                        }
                                     </Box>
                                 </StyledContainerBox>
                             </form>
