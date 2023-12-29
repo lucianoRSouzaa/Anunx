@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import slugify from 'slugify'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 import {
     Container,
     Grid,
@@ -29,6 +31,15 @@ const StyledBoxSearch = styled(Paper)(({ theme }) => ({
 }))
 
 const Home = ({ products }) => {
+    const router = useRouter()
+    const [search, setSearch] = useState()
+
+    const handleSubmitSearch = () => {
+        router.push({
+            pathname: `/search/${search}`,
+        })
+    }
+
     return (
         <TemplateDefault>
                 <Container maxWidth="md">
@@ -39,8 +50,9 @@ const Home = ({ products }) => {
                         <InputBase
                             placeholder="Ex: iPhone 12"
                             fullWidth
+                            onChange={(e) => setSearch(e.target.value)}
                         />
-                        <IconButton>
+                        <IconButton onClick={handleSubmitSearch}>
                             <SearchIcon />
                         </IconButton>
                     </StyledBoxSearch>
