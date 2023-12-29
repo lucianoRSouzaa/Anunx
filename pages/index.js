@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import slugify from 'slugify'
 import {
     Container,
     Grid,
@@ -53,7 +54,9 @@ const Home = ({ products }) => {
                     <Grid container spacing={4}>
                         {
                             products.map(product => {
-
+                                // .toLowerCase() nativo do JS
+                                const categorySlug = slugify(product.category).toLowerCase()
+                                const productSlug = slugify(product.title).toLowerCase()
                                 
                                 return (
                                     <Grid key={product._id} item xs={12} sm={6} md={4}>
