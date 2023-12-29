@@ -1,22 +1,20 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import slugify from 'slugify'
 import {
     Container,
     Typography,
     Grid,
-    IconButton,
     Paper,
-    InputBase,
     styled
 } from '@mui/material'
-
-import SearchIcon from '@mui/icons-material/Search';
 
 import TemplateDefault from '../../src/templates/Default'
 import Card from '../../src/components/Card'
 import StyledBox from '@/src/components/StyledBox'
 import ProductsModel from '@/src/models/products'
 import { formatCurrency } from '@/src/utils/currency'
+import SearchBar  from '@/src/components/SearchBar'
 
 const StylePaper = styled(Paper)(({ theme }) => ({
     display: 'flex',
@@ -26,20 +24,22 @@ const StylePaper = styled(Paper)(({ theme }) => ({
 }))
 
 const List = ({ products, query }) => {
+    const router = useRouter()
+
+    const handleSubmitSearch = search => {
+        router.push({
+            pathname: `/search/${search}`,
+        })
+    }
+
     return (
         <TemplateDefault>
             <Container maxWidth="lg">
 
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={12} md={12}>
-                        <StylePaper component="form">
-                            <InputBase 
-                                placeholder="Ex: iPhone 12 com garantia"
-                                fullWidth
-                            />
-                            <IconButton type="submit" aria-label="search">
-                                <SearchIcon />
-                            </IconButton>
+                        <StylePaper>
+                            <SearchBar handleSubmitSearch={handleSubmitSearch} />
                         </StylePaper>
                     </Grid>
                 </Grid>

@@ -1,24 +1,20 @@
 import Link from 'next/link'
 import slugify from 'slugify'
-import { useState } from 'react'
 import { useRouter } from 'next/router'
 import {
     Container,
     Grid,
-    IconButton,
-    InputBase,
     Paper,
     Typography,
     styled,
 } from '@mui/material'
-
-import SearchIcon from '@mui/icons-material/Search'
 
 import TemplateDefault from '../src/templates/Default'
 import Card from '../src/components/Card'
 import dbConnect from '@/src/utils/dbConnect'
 import ProductsModel from '@/src/models/products'
 import { formatCurrency } from '@/src/utils/currency'
+import SearchBar from '@/src/components/SearchBar'
 
 const StyledContainerCards = styled(Container)(({ theme }) => ({
     paddingTop: theme.spacing(5),
@@ -32,9 +28,8 @@ const StyledBoxSearch = styled(Paper)(({ theme }) => ({
 
 const Home = ({ products }) => {
     const router = useRouter()
-    const [search, setSearch] = useState()
 
-    const handleSubmitSearch = () => {
+    const handleSubmitSearch = search => {
         router.push({
             pathname: `/search/${search}`,
         })
@@ -47,14 +42,7 @@ const Home = ({ products }) => {
                         O que deseja encontrar?
                     </Typography>
                     <StyledBoxSearch>
-                        <InputBase
-                            placeholder="Ex: iPhone 12"
-                            fullWidth
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-                        <IconButton onClick={handleSubmitSearch}>
-                            <SearchIcon />
-                        </IconButton>
+                        <SearchBar handleSubmitSearch={handleSubmitSearch} />
                     </StyledBoxSearch>
                 </Container>
 
