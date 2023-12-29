@@ -22,6 +22,11 @@ const StyledMenuLink = styled(Link)(() => ({
   color: 'inherit',
   textDecoration: 'none'
 }))
+const StyledLogoLink = styled(Link)(() => ({
+  color: 'inherit',
+  textDecoration: 'none',
+  flexGrow: 1
+}))
 
 export default function ButtonAppBar() {
   const [anchorUserMenu, setAnchorUserMenu] = useState(false)
@@ -33,9 +38,11 @@ export default function ButtonAppBar() {
       <AppBar position="static" elevation={3}>
         <Container maxWidth="lg">
           <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Anunx
-            </Typography>
+            <StyledLogoLink href='/' passHref>
+              <Typography variant="h6" component="div">
+                Anunx
+              </Typography>
+            </StyledLogoLink>
             <Link href={session ? '/user/publish' : '/auth/signin'} passHref style={{ color: 'inherit' }}>
                <Button color="inherit" variant="outlined" sx={{ mr: 3 }}>Anunciar e Vender</Button>
             </Link>
