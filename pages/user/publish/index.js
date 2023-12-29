@@ -34,8 +34,6 @@ const Publish = () => {
     const router = useRouter()
     const session = useSession()
 
-    console.log(session)
-
     const formValues = {
         ...initialValues,
     }
@@ -75,13 +73,10 @@ const Publish = () => {
             }
         }
     
-        axios.post('/api/products', formData)
+        axios.post('/api/products/add', formData)
             .then(handleSuccess)
             .catch(handleError)
     }
-
-    console.log(formValues)
-
 
     return (
         <TemplateDefault>
