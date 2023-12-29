@@ -36,8 +36,6 @@ const post = async (req, res) => {
       
             const oldpath = file.path
             const newpath = path.join(form.uploadDir, filename)
-
-            console.log(oldpath, newpath)
       
             filesToSave.push({
                 name: filename,
@@ -89,6 +87,21 @@ const post = async (req, res) => {
     })
 }
 
+const remove = async (req, res) => {
+    await dbConnect()
+  
+    const id = req.body.id
+  
+    const deleted = await ProductsModel.findByIdAndDelete(id)
+  
+    if (deleted) {
+        return res.status(200).json({ success: true })
+    } else {
+        return res.status(500).json({ success: false })
+    }
+}
+
 export {
     post,
+    remove,
 }
