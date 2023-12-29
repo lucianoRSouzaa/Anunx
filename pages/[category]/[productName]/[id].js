@@ -11,8 +11,11 @@ import {
 } from '@mui/material'
 import Carousel from 'react-material-ui-carousel'
 
-import TemplateDefault from '../../src/templates/Default'
+import TemplateDefault from '../../../src/templates/Default'
 import StyledBox from '@/src/components/StyledBox'
+import dbConnect from '@/src/utils/dbConnect'
+import ProductsModel from '@/src/models/products'
+import { formatCurrency } from '@/src/utils/currency'
 
 const StyledCard = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.background.white,
@@ -27,7 +30,7 @@ const StyledPrice = styled(Typography)(() => ({
     marginBottom: 15,
 }))
 
-const Product = () => {
+const Product = ({ product }) => {
     return (
         <TemplateDefault>
             <Container maxWidth="lg">
@@ -44,35 +47,32 @@ const Product = () => {
                                     }
                                 }}
                             >
-                                <Card style={{ height: '100%' }}>
-                                    <CardMedia 
-                                        style={{ paddingTop: '56%' }}
-                                        image="https://source.unsplash.com/random?a=1"
-                                        title="Título da imagem"
-                                    />
-                                </Card>
-                                <Card style={{ height: '100%' }}>
-                                    <CardMedia 
-                                        style={{ paddingTop: '56%' }}
-                                        image="https://source.unsplash.com/random?a=2"
-                                        title="Título da imagem"
-                                    />
-                                </Card>
+                                {
+                                    product.files.map(file => (
+                                        <Card key={file.name} style={{ height: '100%' }}>
+                                        <CardMedia
+                                            style={{ paddingTop: '56%' }}
+                                            image={`/uploads/${file.name}`}
+                                            title={product.title}
+                                        />
+                                        </Card>
+                                    ))
+                                }
                             </Carousel>
                         </StyledBox>
 
                         <StyledBox applymargin>
+                            {/* TODO - criar data de criação */}
                             <Typography component="span" variant="caption">Publicado 16 de Junho de 2021</Typography>
-                            <StyledProductName component="h4" variant="h4">Jaguar XE 2.0 Aut.</StyledProductName>
-                            <StyledPrice component="h4" variant="h4">R$ 50.000,00</StyledPrice>
-                            <Chip label="Categoria" />
+                            <StyledProductName component="h4" variant="h4">{product.title}</StyledProductName>
+                            <StyledPrice component="h4" variant="h4">{formatCurrency(product.price)}</StyledPrice>
+                            <Chip label={product.category} />
                         </StyledBox>
 
                         <StyledBox>
                             <Typography component="h6" variant="h6">Descrição</Typography>
                             <Typography component="p" variant="body2">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque aut vel eveniet corporis eaque facilis adipisci, numquam quia fuga, tenetur alias cumque cupiditate ea nulla! Placeat harum aperiam cumque dolor?
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque aut vel eveniet corporis eaque facilis adipisci, numquam quia fuga, tenetur alias cumque cupiditate ea nulla! Placeat harum aperiam cumque dolor?
+                                {product.description}
                             </Typography>
                         </StyledBox>
                     </Grid>
@@ -81,18 +81,21 @@ const Product = () => {
                         <StyledCard elevation={0}>
                             <CardHeader 
                                 avatar={
-                                    <Avatar>L</Avatar>
+                                    <Avatar src={product.user.image}>
+                                        {product.user.image !== "undefined" ? null : product.user.name[0]}
+                                    </Avatar>
                                 }
-                                title="Luciano Souza"
-                                subheader="lucianosouza@email.com"
+                                title={product.user.name}
+                                subheader={product.user.email}
                             />
                             <CardMedia 
-                                image="https://source.unsplash.com/random"
-                                title="Luciano Souza"
+                                image={product.user.image}
+                                title={product.user.name}
                             />
                         </StyledCard>
 
                         <StyledBox textAlign="left">
+                            {/* TODO - criar localização */}
                             <Typography component="h6" variant="h6">Localização</Typography>
                         </StyledBox>
                     </Grid>
@@ -100,6 +103,20 @@ const Product = () => {
             </Container>
         </TemplateDefault>
     )
+}
+
+export async function getServerSideProps({ query }) {
+    const { id } = query
+  
+    await dbConnect()
+  
+    const product = await ProductsModel.findOne({ _id: id })
+  
+    return {
+        props: {
+            product: JSON.parse(JSON.stringify(product))
+        }    
+    }
 }
 
 export default Product
