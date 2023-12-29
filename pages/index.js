@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import {
     Container,
     Grid,
@@ -12,6 +13,9 @@ import SearchIcon from '@mui/icons-material/Search'
 
 import TemplateDefault from '../src/templates/Default'
 import Card from '../src/components/Card'
+import dbConnect from '@/src/utils/dbConnect'
+import ProductsModel from '@/src/models/products'
+import { formatCurrency } from '@/src/utils/currency'
 
 const StyledContainerCards = styled(Container)(({ theme }) => ({
     paddingTop: theme.spacing(5),
@@ -23,7 +27,7 @@ const StyledBoxSearch = styled(Paper)(({ theme }) => ({
     marginTop: 20,
 }))
 
-const Home = () => {
+const Home = ({ products }) => {
     return (
         <TemplateDefault>
                 <Container maxWidth="md">
@@ -47,31 +51,41 @@ const Home = () => {
                     </Typography>
                     <br />
                     <Grid container spacing={4}>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <Card
-                                image={'https://source.unsplash.com/random'}
-                                title="Produto X"
-                                subtitle="R$ 60,00"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <Card
-                                image={'https://source.unsplash.com/random'}
-                                title="Produto X"
-                                subtitle="R$ 60,00"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <Card
-                                image={'https://source.unsplash.com/random'}
-                                title="Produto X"
-                                subtitle="R$ 60,00"
-                            />
-                        </Grid>
+                        {
+                            products.map(product => {
+
+                                
+                                return (
+                                    <Grid key={product._id} item xs={12} sm={6} md={4}>
+                                        <Link href={`/${categorySlug}/${productSlug}/${product._id}`} style={{ textDecoration: 'none' }} passHref>
+                                            <Card
+                                                image={`/uploads/${product.files[0].name}`}
+                                                title={product.title}
+                                                subtitle={formatCurrency(product.price)}
+                                            />
+                                        </Link>
+                                    </Grid>
+                                )
+                            })
+                        }
                     </Grid>
                 </StyledContainerCards>
         </TemplateDefault>
     )
+}
+
+export async function getServerSideProps() {
+    await dbConnect()
+
+    const products = await ProductsModel.aggregate([{
+        $sample: { size: 6 }
+    }])
+
+    return {
+        props: {
+            products: JSON.parse(JSON.stringify(products))
+        }
+    }
 }
 
 export default Home
