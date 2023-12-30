@@ -11,7 +11,8 @@ const schema = new mongoose.Schema({
         required: [true, 'O campo "título do anúncio" é obrigatório.'],
     },
     category: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'categories',
         required: [true, 'O campo "categoria" é obrigatório.'],
     },
     description: {
