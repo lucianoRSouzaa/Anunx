@@ -21,6 +21,8 @@ import { initialValues, validationSchema } from './formValues'
 
 import TemplateDefault from '../../../src/templates/Default'
 import useToasty from '@/src/contexts/Toasty'
+import dbConnect from '@/src/utils/dbConnect'
+import CategoriesModel from '@/src/models/categories'
 import {
     StyledContainerTitle,
     StyledContainerBox,
@@ -29,7 +31,7 @@ import {
 import FileUpload from '@/src/components/FileUpload'
 import StyledBox from '@/src/components/StyledBox'
 
-const Publish = () => {
+const Publish = ({ categories }) => {
     const { setToasty } = useToasty()
     const router = useRouter()
     const session = useSession()
@@ -136,22 +138,12 @@ const Publish = () => {
                                                 value={values.category}
                                                 fullWidth
                                                 onChange={handleChange}      
-                                            >                        
-                                                <MenuItem value="Bebê e Criança">Bebê e Criança</MenuItem>
-                                                <MenuItem value="Agricultura">Agricultura</MenuItem>
-                                                <MenuItem value="Moda">Moda</MenuItem>
-                                                <MenuItem value="Carros, Motos e Barcos">Carros, Motos e Barcos</MenuItem>
-                                                <MenuItem value="Serviços">Serviços</MenuItem>
-                                                <MenuItem value="Lazer">Lazer</MenuItem>
-                                                <MenuItem value="Animais">Animais</MenuItem>
-                                                <MenuItem value="Moveis, Casa e Jardim">Moveis, Casa e Jardim</MenuItem>
-                                                <MenuItem value="Imóveis">Imóveis</MenuItem>
-                                                <MenuItem value="Equipamentos e Ferramentas">Equipamentos e Ferramentas</MenuItem>
-                                                <MenuItem value="Celulares e Tablets">Celulares e Tablets</MenuItem>
-                                                <MenuItem value="Esporte">Esporte</MenuItem>
-                                                <MenuItem value="Tecnologia">Tecnologia</MenuItem>
-                                                <MenuItem value="Emprego">Emprego</MenuItem>
-                                                <MenuItem value="Outros">Outros</MenuItem>
+                                            >           
+                                                {
+                                                    categories.map((category) => (
+                                                        <MenuItem key={category._id} value={category._id}>{category.name}</MenuItem>
+                                                    ))
+                                                }
                                             </Select>
                                             <FormHelperText>
                                                 { errors.category && touched.category ? errors.category : null }
@@ -274,6 +266,18 @@ const Publish = () => {
 
         </TemplateDefault>
     )
+}
+
+export async function getServerSideProps() {
+    await dbConnect()
+
+    const categories = await CategoriesModel.find({})
+
+    return {
+        props: {
+            categories: JSON.parse(JSON.stringify(categories))
+        }
+    }
 }
 
 Publish.requireAuth = true
