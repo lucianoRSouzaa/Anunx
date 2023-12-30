@@ -31,6 +31,7 @@ const StyledPrice = styled(Typography)(() => ({
 }))
 
 const Product = ({ product }) => {
+    
     return (
         <TemplateDefault>
             <Container maxWidth="lg">
@@ -66,7 +67,7 @@ const Product = ({ product }) => {
                             <Typography component="span" variant="caption">Publicado 16 de Junho de 2021</Typography>
                             <StyledProductName component="h4" variant="h4">{product.title}</StyledProductName>
                             <StyledPrice component="h4" variant="h4">{formatCurrency(product.price)}</StyledPrice>
-                            <Chip label={product.category} />
+                            <Chip label={product.category.name} />
                         </StyledBox>
 
                         <StyledBox>
@@ -110,7 +111,10 @@ export async function getServerSideProps({ query }) {
   
     await dbConnect()
   
-    const product = await ProductsModel.findOne({ _id: id })
+    const product = await ProductsModel
+                            .findOne({ _id: id })
+                            .populate('category') 
+                            .exec()
   
     return {
         props: {
