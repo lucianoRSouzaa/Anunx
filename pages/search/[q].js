@@ -58,12 +58,11 @@ const List = ({ products, query }) => {
                         <Grid container spacing={4}>
                             {
                                 products.map(product => {
-                                    const categorySlug = slugify(product.category).toLowerCase()
                                     const productSlug = slugify(product.title).toLowerCase()
                                     
                                     return (
                                         <Grid key={product._id} item xs={12} sm={6} md={4}>
-                                            <Link href={`/${categorySlug}/${productSlug}/${product._id}`} style={{ textDecoration: 'none' }} passHref>
+                                            <Link href={`/${product.category.slug}/${productSlug}/${product._id}`} style={{ textDecoration: 'none' }} passHref>
                                                 <Card
                                                     image={`/uploads/${product.files[0].name}`}
                                                     title={product.title}
@@ -102,6 +101,8 @@ export async function getServerSideProps({ query }) {
             },
         ]
     })
+        .populate('category')
+        .exec()
   
     return {
         props: {
