@@ -28,6 +28,10 @@ import {
     StyledContainerBox,
     StyledInputLabel
 } from './styles'
+import {
+    formatPrice,
+    unformatPrice,
+} from './maskHelpers'
 import FileUpload from '@/src/components/FileUpload'
 import StyledBox from '@/src/components/StyledBox'
 
@@ -60,7 +64,11 @@ const Publish = ({ categories }) => {
             severity: 'error',
         })
     }
-    
+
+    const handleChangePrice = (event, setFieldValue) => {
+        formatPrice(event, setFieldValue)
+    }
+
     const handleSubmit = async (values) => {
         const formData = new FormData()
     
@@ -74,6 +82,8 @@ const Publish = ({ categories }) => {
                 formData.append(field, values[field])
             }
         }
+
+        formData.append('price', unformatPrice(values.price))
     
         axios.post('/api/products/add', formData)
             .then(handleSuccess)
@@ -186,7 +196,8 @@ const Publish = ({ categories }) => {
                                         <FormControl error={errors.price && touched.price} fullWidth>
                                             <StyledInputLabel>Preço de venda</StyledInputLabel>
                                             <Input
-                                                onChange={handleChange}
+                                                value={values.price}
+                                                onChange={(event) => handleChangePrice(event, setFieldValue)}
                                                 name="price"
                                                 startAdornment={<InputAdornment position="start">R$</InputAdornment>}
                                             />

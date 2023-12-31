@@ -20,7 +20,7 @@ const validationSchema = yup.object().shape({
     description: yup.string()
         .min(50, 'Escreva uma descrição com pelo menos 50 caracteres.')    
         .required('Campo obrigatório'),
-    price: yup.number().required('Campo obrigatório'),
+    price: yup.string().required('Campo obrigatório'),
     email: yup.string().email('Digite um e-mail válido').required('Campo obrigatório'),
     name: yup.string().required('Campo obrigatório'),
     phone: yup.number().required('Campo obrigatório'),
