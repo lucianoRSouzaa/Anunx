@@ -31,6 +31,8 @@ import {
 import {
     formatPrice,
     unformatPrice,
+    formatPhoneNumber,
+    unformatPhoneNumber,
 } from './maskHelpers'
 import FileUpload from '@/src/components/FileUpload'
 import StyledBox from '@/src/components/StyledBox'
@@ -69,6 +71,10 @@ const Publish = ({ categories }) => {
         formatPrice(event, setFieldValue)
     }
 
+    const handleChangePhone = (event, setFieldValue) => {
+        formatPhoneNumber(event, setFieldValue)
+    }
+
     const handleSubmit = async (values) => {
         const formData = new FormData()
     
@@ -84,6 +90,7 @@ const Publish = ({ categories }) => {
         }
 
         formData.append('price', unformatPrice(values.price))
+        formData.append('phone', unformatPhoneNumber(values.phone))
     
         axios.post('/api/products/add', formData)
             .then(handleSuccess)
@@ -246,10 +253,10 @@ const Publish = ({ categories }) => {
                                         <FormControl error={errors.phone && touched.phone} fullWidth>
                                             <StyledInputLabel>Telefone</StyledInputLabel>
                                             <Input 
+                                                value={values.phone}
                                                 name="phone"
-                                                onChange={handleChange}
+                                                onChange={(event) => handleChangePhone(event, setFieldValue)}
                                                 fullWidth
-
                                             />
                                             <FormHelperText>
                                                 { errors.phone && touched.phone ? errors.phone : null }

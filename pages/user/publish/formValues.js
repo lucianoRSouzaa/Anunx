@@ -23,7 +23,7 @@ const validationSchema = yup.object().shape({
     price: yup.string().required('Campo obrigatório'),
     email: yup.string().email('Digite um e-mail válido').required('Campo obrigatório'),
     name: yup.string().required('Campo obrigatório'),
-    phone: yup.number().required('Campo obrigatório'),
+    phone: yup.string().required('Campo obrigatório'),
     files: yup.array().min(1, 'Envie pelo menos uma foto').required('Campo obrigatório')
 })
 
